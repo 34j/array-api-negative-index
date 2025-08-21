@@ -79,7 +79,6 @@ def arange_asymmetric(
         The shape is (2 * stop - 1,).
 
     """
-    xp = array_namespace(xp)
     return to_symmetric(
         xp.arange(stop, dtype=dtype, device=device),
         asymmetric=True,

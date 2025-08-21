@@ -44,7 +44,67 @@ Utils for indexing arrays with {-n, -(n-1), ..., -1, 0, 1, ..., n-1, n} using ar
 
 Install this via pip (or your favourite package manager):
 
-`pip install array-api-negative-index`
+```shell
+pip install array-api-negative-index
+```
+
+## Usage
+
+This package provides a utility for packing array elements in the order [0, 1, 2, ..., n, -n-1, ..., -1].
+This allows one to access the `i`-th element by `array[i]`, regardless of whether `i` is positive, 0 or negative, thanks to "Negative Indexing" in array API.
+This is useful in practical applications such as expressing the order `m` of spherical harmonics.
+
+```python
+from array_api_negative_index import to_symmetric, flip_symmetric, arange_asymmetric
+```
+
+### `arange_asymmetric()`
+
+```python
+import numpy as np
+
+a = arange_asymmetric(3, xp=np)
+print(a)
+```
+
+```text
+[ 0  1  2 -2 -1]
+```
+
+Not to confuse with `np.arange(-stop + 1, stop)`!
+This caused me to create bugs many times.
+
+```python
+a = np.arange(-2, 3)
+print(a)
+```
+
+```text
+[-2, -1, 0, 1, 2]
+```
+
+### `flip_symmetric()`
+
+```python
+b = flip_symmetric(a)
+print(f"{a} -> (flip) -> {b}")
+```
+
+```text
+[ 0  1  2 -2 -1] -> (flip) -> [ 0 -1 -2  2  1]
+```
+
+### `to_symmetric()`
+
+```python
+c = np.asarray([0, 3, 5])
+d = to_symmetric(c, asymmetric=True, conjugate=False)
+print(f"{c} -> (to_symmetric) -> {d}")
+```
+
+```text
+[0 3 5] -> (to_symmetric) -> [ 0  3  5 -5 -3]
+```
 
 ## Contributors ✨
 
