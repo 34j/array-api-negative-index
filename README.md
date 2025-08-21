@@ -50,9 +50,9 @@ pip install array-api-negative-index
 
 ## Usage
 
-This package provides a utility for packing array elements in the order [0, 1, 2, ..., n, -n-1, ..., -1].
-This allows one to access the `i`-th element by `array[i]`, regardless of whether `i` is positive, 0 or negative, thanks to "Negative Indexing" in array API.
-This is useful in practical applications such as expressing the order `m` of spherical harmonics.
+- This package provides a utility for packing array elements in the order `[0, 1, 2, ..., n, -n, ..., -2, -1]`.
+- This allows one to access the `i`-th element by `array[i]`, regardless of whether `i` is positive, 0 or negative, thanks to "Negative Indexing" in array API.
+- This is useful for representing the order `m` in spherical harmonics for example.
 
 ```python
 from array_api_negative_index import to_symmetric, flip_symmetric, arange_asymmetric
