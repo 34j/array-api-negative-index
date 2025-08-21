@@ -54,9 +54,9 @@ def arange_asymmetric(
     stop: int,
     /,
     *,
+    xp: ArrayNamespaceFull,
     dtype: Any = None,
     device: Any = None,
-    xp: ArrayNamespaceFull = None,
 ) -> Array:
     """
     Create a symmetric array with values from -stop+1 to stop-1.
