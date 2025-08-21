@@ -38,7 +38,7 @@
 
 ---
 
-Utils for indexing arrays with {-n, -(n-1), ..., -1, 0, 1, ..., n-1, n} using array API.
+Utils for indexing arrays with `{-n, -(n-1), ..., -1, 0, 1, ..., n-1, n}` using array API.
 
 ## Installation
 
