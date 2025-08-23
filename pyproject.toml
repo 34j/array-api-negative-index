@@ -4,7 +4,7 @@ requires = [ "setuptools" ]
 
 [project]
 name = "array-api-negative-index"
-version = "0.1.0"
+version = "1.0.0"
 description = "Utils for indexing arrays with {-n, -(n-1), ..., -1, 0, 1, ..., n-1, n} using array API."
 readme = "README.md"
 license = { text = "MIT" }
