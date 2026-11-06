@@ -1,28 +1,16 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# This file only contains a selection of the most common options. For a full
-# list see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
+"""Sphinx configuration for Array API Negative Index."""
+
 from pathlib import Path
 from typing import Any
 
 from sphinx.application import Sphinx
 from sphinx.ext import apidoc
 
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-
 project = "Array API Negative Index"
-copyright = "2025, 34j"
+copyright = "2025, 34j"  # noqa: A001
 author = "34j"
 release = "1.0.0"
 
-# -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
-
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
 extensions = [
     "myst_parser",
     "sphinx.ext.napoleon",
@@ -30,60 +18,56 @@ extensions = [
     "sphinx.ext.viewcode",
 ]
 napoleon_google_docstring = False
-
-# The suffix of source filenames.
-source_suffix = [
-    ".rst",
-    ".md",
-]
-
-# Add any paths that contain templates here, relative to this directory.
-templates_path = [
-    "_templates",
-]
-
-# List of patterns, relative to source directory, that match files and
-# directories to ignore when looking for source files.
-# This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = [
-    "_build",
-    "Thumbs.db",
-    ".DS_Store",
-]
-
-
-# -- Options for HTML output -------------------------------------------------
-
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
+source_suffix = [".rst", ".md"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 html_theme = "furo"
 
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
 
+def generate_documentation_sources(app: Sphinx, _: Any) -> None:
+    """Create the temporary landing page and changelog source."""
+    docs_path = Path(app.srcdir)
+    (docs_path / "index.md").write_text(
+        """```{include} ../README.md
 
-# -- Automatically run sphinx-apidoc -----------------------------------------
+```
+
+```{toctree}
+:caption: Project Info
+:maxdepth: 2
+:glob:
+
+*
+```
+""",
+        encoding="utf-8",
+    )
+    (docs_path / "changelog.md").write_text("```{include} ../CHANGELOG.md\n```\n", encoding="utf-8")
 
 
 def run_apidoc(_: Any) -> None:
-    """Run sphinx-apidoc."""
+    """Generate the API reference source document."""
     docs_path = Path(__file__).parent
     module_path = docs_path.parent / "src" / "array_api_negative_index"
+    apidoc.main([
+        "--force",
+        "--module-first",
+        "--no-toc",
+        "-o",
+        docs_path.as_posix(),
+        module_path.as_posix(),
+    ])
 
-    apidoc.main(
-        [
-            "--force",
-            "--module-first",
-            "-o",
-            docs_path.as_posix(),
-            module_path.as_posix(),
-        ]
-    )
+
+def cleanup_documentation_sources(app: Sphinx, _: Any) -> None:
+    """Remove source files generated only for the documentation build."""
+    for name in ("index.md", "changelog.md"):
+        path = Path(app.srcdir) / name
+        if path.exists():
+            path.unlink()
 
 
 def setup(app: Sphinx) -> None:
-    """Setup sphinx."""
+    """Register documentation generation hooks."""
+    app.connect("config-inited", generate_documentation_sources)
     app.connect("builder-inited", run_apidoc)
+    app.connect("build-finished", cleanup_documentation_sources)

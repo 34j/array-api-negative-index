@@ -12,9 +12,7 @@ def test_flip_symmetric(xp: ArrayNamespaceFull) -> None:
 
 @pytest.mark.parametrize("asymmetric", [True, False])
 @pytest.mark.parametrize("conjugate", [True, False])
-def test_to_symmetric_manual(
-    asymmetric: bool, conjugate: bool, xp: ArrayNamespaceFull
-) -> None:
+def test_to_symmetric_manual(asymmetric: bool, conjugate: bool, xp: ArrayNamespaceFull) -> None:
     array = xp.asarray([0, 1 + 1j, 2 - 1j])
     result = to_symmetric(xp.asarray(array), asymmetric=asymmetric, conjugate=conjugate)
     if asymmetric and conjugate:
