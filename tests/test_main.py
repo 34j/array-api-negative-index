@@ -1,7 +1,12 @@
 import pytest
 from array_api._2024_12 import ArrayNamespaceFull
 
-from array_api_negative_index import flip_symmetric, to_symmetric
+from array_api_negative_index import arange_asymmetric, flip_symmetric, to_symmetric
+
+
+def test_arange_asymmetric(xp: ArrayNamespaceFull) -> None:
+    result = arange_asymmetric(3, xp=xp)
+    assert xp.all(result == xp.asarray([0, 1, 2, -2, -1]))
 
 
 def test_flip_symmetric(xp: ArrayNamespaceFull) -> None:
