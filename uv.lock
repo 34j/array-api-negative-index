@@ -85,8 +85,8 @@ dev = [
     { name = "packaging-34j", extras = ["test"], specifier = ">=1.1.2" },
     { name = "pytest", specifier = ">=9" },
     { name = "pytest-cov", specifier = ">=7" },
-    { name = "torch", specifier = ">=2.8.0" },
-    { name = "ty" },
+    { name = "torch", specifier = ">=2.8" },
+    { name = "ty", specifier = ">=0.0.10" },
 ]
 docs = [{ name = "packaging-34j", extras = ["docs"], specifier = ">=1.1.2" }]
 
