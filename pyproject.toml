@@ -36,14 +36,14 @@ urls.repository = "https://github.com/34j/array-api-negative-index"
 dev = [
   "coverage",
   "numpy>=2.0.2",
-  "packaging-34j[test]>=1.1.2",
+  "packaging-34j[test]>=1.1.8",
   "pytest>=9",
   "pytest-cov>=7",
   "torch>=2.8",
   "ty>=0.0.10",
 ]
 docs = [
-  "packaging-34j[docs]>=1.1.2",
+  "packaging-34j[docs]>=1.1.8",
 ]
 
 [tool.ruff]
@@ -54,13 +54,3 @@ max_supported_python = "3.14"
 
 [tool.ty]
 terminal.error-on-warning = true
-
-[tool.pytest]
-ini_options.addopts = [
-  "-v",
-  "-Wdefault",
-  "--cov=array_api_negative_index",
-  "--cov-report=term",
-  "--cov-report=xml",
-]
-ini_options.pythonpath = [ "src" ]
