@@ -1,11 +1,11 @@
-from typing import Any
+from typing import Any, cast
 
 from array_api._2024_12 import Array, ArrayNamespaceFull
 from array_api_compat import array_namespace
 
 
 def to_symmetric(
-    input: Array,
+    input: Array,  # noqa: A002
     /,
     *,
     axis: int = 0,
@@ -30,22 +30,17 @@ def to_symmetric(
     -------
     Array
         The symmetric tensor.
-        If not include_zero_twice,
-        forall a < input.shape[axis] result[-a] = result[a]
-        Else,
-        forall a < input.shape[axis] result[-a-1] = result[a]
+        Forall a < input.shape[axis], result[-a] = result[a].
 
     """
-    xp = array_namespace(input)
+    xp = array_namespace(cast("Any", input))
     input_to_symmetric = input
     if asymmetric:
         input_to_symmetric = -input_to_symmetric
     if conjugate:
         input_to_symmetric = xp.conj(input_to_symmetric)
-    axis = axis % input.ndim
-    input_to_symmetric = input_to_symmetric[
-        (slice(None),) * axis + (slice(1, None), ...)
-    ]
+    axis %= input.ndim
+    input_to_symmetric = input_to_symmetric[(slice(None),) * axis + (slice(1, None), ...)]
     input_to_symmetric = xp.flip(input_to_symmetric, axis=axis)
     return xp.concat([input, input_to_symmetric], axis=axis)
 
@@ -79,13 +74,16 @@ def arange_asymmetric(
         The shape is (2 * stop - 1,).
 
     """
-    return to_symmetric(
-        xp.arange(stop, dtype=dtype, device=device),
-        asymmetric=True,
+    return cast(
+        "Array",
+        to_symmetric(
+            xp.arange(stop, dtype=dtype, device=device),
+            asymmetric=True,
+        ),
     )
 
 
-def flip_symmetric(input: Array, /, *, axis: int = 0) -> Array:
+def flip_symmetric(input: Array, /, *, axis: int = 0) -> Array:  # noqa: A002
     """
     Flip a symmetric array.
 
@@ -95,8 +93,6 @@ def flip_symmetric(input: Array, /, *, axis: int = 0) -> Array:
         The input array.
     axis : int, optional
         The axis to flip, by default 0
-    include_zero_twice : bool, optional
-        If True, the zeroth element is included twice, by default False
 
     Returns
     -------
@@ -105,8 +101,8 @@ def flip_symmetric(input: Array, /, *, axis: int = 0) -> Array:
         Forall a < input.shape[axis] result[-a-1] = result[a] = input[a] = input[-a-1]
 
     """
-    xp = array_namespace(input)
-    axis = axis % input.ndim
+    xp = array_namespace(cast("Any", input))
+    axis %= input.ndim
     zero = input[
         (
             slice(

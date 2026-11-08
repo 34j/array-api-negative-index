@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 import pytest
 from array_api._2024_12 import ArrayNamespaceFull
 
@@ -11,4 +13,4 @@ def xp(request: pytest.FixtureRequest) -> ArrayNamespaceFull:
         from array_api_compat import torch as xp
     else:
         raise ValueError(f"Unknown backend: {backend}")
-    return xp
+    return cast("Any", xp)
