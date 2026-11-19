@@ -39,7 +39,7 @@ dev = [
   "packaging-34j[test]>=1.1.8",
   "pytest>=9",
   "pytest-cov>=7",
-  "torch>=2.8",
+  "torch>=2.15.0",
   "ty>=0.0.10",
 ]
 docs = [
